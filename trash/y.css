@@ -1,0 +1,71 @@
+body {
+margin: 0 !important;
+font-family: Jura, sans-serif !important;
+}
+
+@font-face {
+font-family: Jura;
+src: url("https://tahmidrayat.github.io/trash/trash/jura.ttf");
+}
+
+#title {
+text-align: center !important;
+color: #ff0000 !important;
+margin: 4vh auto auto !important;
+text-shadow: 0 0 0.5em #da322d !important;
+font-size: 25px !important;
+}
+
+.image{
+user-drag: none;
+display: block;
+margin-left: auto;
+margin-right: auto;
+-webkit-user-drag: none;
+-khtml-user-drag: none;
+-moz-user-drag: none;
+-o-user-drag: none;
+user-select: none;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+pointer-events: none;
+margin: 3vh auto auto !important;
+}
+
+a1{
+text-decoration: none !important;
+color: rgb(14, 182, 14) !important;
+margin: 4vh auto auto !important;
+}
+
+a2{
+text-decoration: none !important;
+color: rgb(206, 0, 0) !important;
+margin: 4vh auto auto !important;
+}
+
+a3{
+text-decoration: none !important;
+color: rgb(190, 5, 190) !important;
+margin: 4vh auto auto !important;
+}
+
+a4{
+text-decoration: none !important;
+color: rgb(29, 152, 253)!important;
+margin: 4vh auto auto !important;
+}
+
+a5{
+text-decoration: none !important;
+color: rgb(0, 255, 179)!important;
+margin: 4vh auto auto !important;
+}
+
+b1 {
+background: none !important;
+color: inherit !important;
+text-align: center !important;
+font-size: 20px !important;
+}
