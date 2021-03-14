@@ -33,6 +33,24 @@ pointer-events: none;
 margin: 3vh auto auto !important;
 }
 
+table { 
+border-collapse: collapse; 
+margin:auto;
+}
+
+th { 
+background: inherit; 
+color: red; 
+font-weight: bold; 
+}
+
+td, th { 
+padding: 7px; 
+border: 1px solid #11a1f5; 
+text-align: left; 
+font-size: 18px;
+}}
+
 a1{
 text-decoration: none !important;
 color: rgb(14, 182, 14) !important;
