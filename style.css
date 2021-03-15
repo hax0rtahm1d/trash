@@ -11,9 +11,9 @@ html {
   background: url("https://www.blissfullemon.com/wp-content/uploads/2018/09/HauntedHouseBackground.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 700px 600px;
-  width: 800px;
-  height: 600px;
+  background-size: 500px 400px;
+  width: 600px;
+  height: 400px;
   margin: 0px auto;
   display: grid;
 }
