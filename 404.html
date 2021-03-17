@@ -10,34 +10,22 @@
 </head>
 
 <style type="text/css">
-*{
-    transition: all 0.6s;
-}
-html {
-    height: 100%;
-}
-body{
-    color: #888;
-    background: black;
-    margin: 0;
+
+*:focus {outline:none;}
+body {
+  background: black;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  margin: 30px;
+  overflow:hidden;
 }
 
-.fof{
-    width: 100%;
-    height: 100vh;
-    text-align: center;
-	  vertical-align: middle;
-}
-.fof h1{
+.fa-5, h2 {
     font-size: 12em;
-    font-weight: 500;
+    font-weight: 600;
     display:inline-block;
     margin: 0;
-	  animation: type .5s alternate infinite;
-}
-@keyframes type{
-	  from{box-shadow: inset -3px 0px 0px #888;}
-	  to{box-shadow: inset -3px 0px 0px transparent;}
 }
 
 .adu{
@@ -54,9 +42,7 @@ body{
 </script>
 
 <audio id="music" autoplay="autoplay" src="https://tahmidrayat.github.io/trash/distro/darkmist.mp3"></audio>
-
-<div class="fof">
-<h1>Error 404 </h1>
-</div>
-<a href="#" class="adu" onclick='play();'><<</a>
+<span><i class="fa fa-chain-broken fa-5"></span></i><h2><span> 404</span></h2>
+<h1>What have you done? Just look at it. Shame...</h1>
+<a href="#" class="adu" onclick='play();'><h3>Click Here to Reload</h3></a>
 </html>
