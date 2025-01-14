@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCR Server</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@latest/dist/tesseract.min.js"></script>
 </head>
 <body>
     <h1>OCR Server</h1>
@@ -14,25 +15,14 @@
         <img id="image" style="max-width: 100%; height: auto;" />
     </div>
 
-    <h2>OCR Result:</h2>
-    <pre id="ocr-result"></pre>
+    <h2>OCR Result:<p id="ocr-result"></p></h2>
+    
 
     <script>
-        // Dynamically load ocrad.js
-        function loadOcradScript(callback) {
-            const script = document.createElement('script');
-            script.src = './ocrad.min.js'; // Path to ocrad.js
-            script.onload = callback;
-            script.onerror = function () {
-                console.error("Failed to load ocrad.js");
-            };
-            document.body.appendChild(script);
-        }
-
         // Function to extract the base64 image from the query parameter and show it
         async function handleOCRRequest() {
             const urlParams = new URLSearchParams(window.location.search);
-            const base64Image = urlParams.get('base64Image'); // Get the base64Image parameter from the URL
+            const base64Image = urlParams.get('base64Image');
 
             if (!base64Image) {
                 console.error("No image provided.");
@@ -49,25 +39,38 @@
                 imgElement.onerror = reject;
             });
 
-            // Load ocrad.js and perform OCR when ready
-            loadOcradScript(() => {
-                // Create a canvas and draw the image
-                const canvas = document.createElement('canvas');
-                canvas.width = imgElement.width;
-                canvas.height = imgElement.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(imgElement, 0, 0);
+            // Perform OCR using Tesseract.js
+            const resultElement = document.getElementById("ocr-result");
+            try {
+                const result = await Tesseract.recognize(
+                    base64Image, // Image data
+                    'eng',       // Language code
 
-                // Perform OCR using Ocrad
-                const result = OCRAD(canvas);
+                );
 
                 // Show the OCR result
-                const resultElement = document.getElementById("ocr-result");
-                resultElement.textContent = result;
+				
+            const filteredText = result.data.text.replace(/[^a-zA-Z0-9+\- ]/g, '');
 
-                // Log OCR result in the console
-                console.log("OCR Result:", result);
-            });
+            // Check the first three characters
+            if (filteredText.length >= 3) {
+                const firstThreeChars = filteredText.slice(0, 3);
+                if (firstThreeChars[1] === '+' || firstThreeChars[1] === '-') {
+                    console.log("Valid OCR Result:", firstThreeChars);
+                    resultElement.textContent = firstThreeChars;
+                } else {
+                    console.error("OCR Result Error: Second character is not '+' or '-'.");
+                }
+            } else {
+                console.error("OCR Result Error: Less than 3 characters detected.");
+            }
+
+				
+
+            } catch (error) {
+                console.error("OCR failed:", error);
+                resultElement.textContent = "OCR failed: " + error.message;
+            }
         }
 
         // Call the function to handle the OCR
