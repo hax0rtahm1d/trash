@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR Server</title>
+    <title>OCR Server GET</title>
     <script src="./ocrad.min.js"></script>
 </head>
 <body>
     <h1>OCR Server</h1>
     <script>
-        // Respond to POST requests
+        // Function to handle OCR from GET requests
         async function handleOCRRequest(event) {
-            event.preventDefault();
-            const request = await event.request.json();
+            const url = new URL(event.request.url);
+            const base64Image = url.searchParams.get('base64Image'); // Get the base64Image parameter
 
-            // Extract Base64 image from request
-            const base64Image = request.base64Image;
+            if (!base64Image) {
+                return new Response(JSON.stringify({ error: "No image provided" }), {
+                    status: 400,
+                    headers: { 'Content-Type': 'application/json' },
+                });
+            }
 
-            // Create an image element
+            // Decode the base64 image
             const img = new Image();
             img.src = base64Image;
 
@@ -37,6 +41,9 @@
             // Perform OCR
             const result = Ocrad(canvas);
 
+            // Log the OCR result in the console
+            console.log("OCR Result:", result);
+
             // Return the OCR result as JSON
             return new Response(JSON.stringify({ result }), {
                 headers: { 'Content-Type': 'application/json' },
@@ -45,7 +52,7 @@
 
         // Register a service worker for handling requests
         self.addEventListener('fetch', event => {
-            if (event.request.method === 'POST') {
+            if (event.request.method === 'GET') {
                 event.respondWith(handleOCRRequest(event));
             }
         });
