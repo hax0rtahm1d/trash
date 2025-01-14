@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Server</title>
+    <script src="./ocrad.min.js"></script>
+</head>
+<body>
+    <h1>OCR Server</h1>
+    <script>
+        // Respond to POST requests
+        async function handleOCRRequest(event) {
+            event.preventDefault();
+            const request = await event.request.json();
+
+            // Extract Base64 image from request
+            const base64Image = request.base64Image;
+
+            // Create an image element
+            const img = new Image();
+            img.src = base64Image;
+
+            // Wait for the image to load
+            await new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = reject;
+            });
+
+            // Create a canvas and draw the image
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+
+            // Perform OCR
+            const result = Ocrad(canvas);
+
+            // Return the OCR result as JSON
+            return new Response(JSON.stringify({ result }), {
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        // Register a service worker for handling requests
+        self.addEventListener('fetch', event => {
+            if (event.request.method === 'POST') {
+                event.respondWith(handleOCRRequest(event));
+            }
+        });
+    </script>
+</body>
+</html>
