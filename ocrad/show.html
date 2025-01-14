@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCR Server</title>
-    <script src="./ocrad.min.js"></script>
 </head>
 <body>
     <h1>OCR Server</h1>
@@ -19,6 +18,17 @@
     <pre id="ocr-result"></pre>
 
     <script>
+        // Dynamically load ocrad.js
+        function loadOcradScript(callback) {
+            const script = document.createElement('script');
+            script.src = './ocrad.min.js'; // Path to ocrad.js
+            script.onload = callback;
+            script.onerror = function () {
+                console.error("Failed to load ocrad.js");
+            };
+            document.body.appendChild(script);
+        }
+
         // Function to extract the base64 image from the query parameter and show it
         async function handleOCRRequest() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -39,22 +49,25 @@
                 imgElement.onerror = reject;
             });
 
-            // Create a canvas and draw the image
-            const canvas = document.createElement('canvas');
-            canvas.width = imgElement.width;
-            canvas.height = imgElement.height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(imgElement, 0, 0);
+            // Load ocrad.js and perform OCR when ready
+            loadOcradScript(() => {
+                // Create a canvas and draw the image
+                const canvas = document.createElement('canvas');
+                canvas.width = imgElement.width;
+                canvas.height = imgElement.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(imgElement, 0, 0);
 
-            // Perform OCR
-            const result = Ocrad(canvas);
+                // Perform OCR using Ocrad
+                const result = OCRAD(canvas);
 
-            // Show the OCR result
-            const resultElement = document.getElementById("ocr-result");
-            resultElement.textContent = result;
+                // Show the OCR result
+                const resultElement = document.getElementById("ocr-result");
+                resultElement.textContent = result;
 
-            // Log OCR result in the console
-            console.log("OCR Result:", result);
+                // Log OCR result in the console
+                console.log("OCR Result:", result);
+            });
         }
 
         // Call the function to handle the OCR
