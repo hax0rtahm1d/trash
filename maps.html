@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .map-container {
+            flex-grow: 1;
+        }
+
+        .info {
+            padding: 1px;
+            background: #494848;
+            text-align: center;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="map-container">
+            <iframe id="map-embed" frameborder="0"></iframe>
+        </div>
+        <div class="info">
+            <p id="coordinates">Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const lat = urlParams.get('lat');
+        const lng = urlParams.get('lng');
+        const zoom = urlParams.get('zoom') || 4;
+
+        if (lat && lng) {
+            const embedUrl = `https://maps.google.com/?output=embed&q=${lat},${lng}&ll=${lat},${lng}&z=${zoom}`;
+            document.getElementById('map-embed').src = embedUrl;
+            document.getElementById('coordinates').textContent =
+                `Latitude: ${lat}, Longitude: ${lng}`;
+        } else {
+            document.getElementById('coordinates').textContent =
+                'No latitude and longitude parameters';
+        }
+    </script>
+</body>
+
+</html>
