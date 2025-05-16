@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Test</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    #info {
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 800px;
+      margin: 20px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .section h2 {
+      color: #007BFF;
+    }
+    .section p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <div class="section" id="browser-info">
+      <h2>Browser</h2>
+    </div>
+    <div class="section" id="display-info">
+      <h2>Display</h2>
+    </div>
+    <div class="section" id="desktop-detection">
+      <h2>Desktop Mode</h2>
+    </div>
+  </div>
+
+  <script>
+    function collectBrowserInfo() {
+      const browserInfo = {
+        'User Agent': navigator.userAgent,
+        'App Version': navigator.appVersion,
+      };
+
+      const browserSection = document.getElementById('browser-info');
+      for (const [key, value] of Object.entries(browserInfo)) {
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>${key}:</strong> ${value}<br><br>`;
+        browserSection.appendChild(p);
+      }
+    }
+
+    function collectDisplayInfo() {
+      const displayInfo = {
+        'Window Inner Width': `${window.innerWidth}px`,
+        'Window Inner Height': `${window.innerHeight}px`,
+      };
+
+      const displaySection = document.getElementById('display-info');
+      for (const [key, value] of Object.entries(displayInfo)) {
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>${key}:</strong> ${value}`;
+        displaySection.appendChild(p);
+      }
+    }
+
+    function detectDesktopMode() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileUA = /mobile|android|iphone|ipad|tablet|blackberry|webos|opera mini|opera mobi|iemobile|windows phone|kindle|silk|playbook/i.test(userAgent);
+
+      const desktopSection = document.getElementById('desktop-detection');
+      const detectionInfo = {
+        'Is Mobile User Agent': isMobileUA ? 'Yes' : 'No',
+      };
+
+      for (const [key, value] of Object.entries(detectionInfo)) {
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>${key}:</strong> ${value}`;
+        desktopSection.appendChild(p);
+      }
+    }
+
+    // Run all detection functions on page load
+    window.onload = () => {
+      collectBrowserInfo();
+      collectDisplayInfo();
+      detectDesktopMode();
+    };
+  </script>
+</body>
+</html>
